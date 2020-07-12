@@ -126,7 +126,8 @@ grm_remove() {
       rm -rf "${web_root:?}/${repo:?}" || continue;
     fi
   done
-  rebuild_index &
+  # only rebuild index if stagit exists
+  command -v stagit-index >/dev/null && rebuild_index &
 }
 
 grm_list() {
