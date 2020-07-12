@@ -52,7 +52,17 @@ recompile_repo() {
 
 rebuild_index() {
   echo "[index] rebuilding index..."
-  stagit-index "${repos_root}/"*.git/ > "${web_root}/index.html"
+  # 1. find all directories in $repos_root ending with .git
+  # 2. filter all the public repos (with git-daemon-export-ok)
+  # 3. run stagit-index on the result
+  # 4. export result to index.html
+  find "${repos_root}/." ! -name . -prune        \
+    -type d -name "*.git"                        \
+    \(                                           \
+      -exec test -e "{}/git-daemon-export-ok" \; \
+      -o                                         \
+      -exec stagit-index {} +                    \
+    \) > "${web_root}/index.html"
   echo "[index] done!"
 }
 
