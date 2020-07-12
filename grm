@@ -17,7 +17,7 @@
 # path of the post-receive hooks
 # GRM_POSTRECV_HOOK="/home/git/.post-receive"
 
-# root directory of git repositories
+# root directory of stagit web pages
 # STAGIT_WEB_ROOT="/srv/git"
 
 #                                            #
