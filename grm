@@ -103,10 +103,10 @@ EOF
 
 # parse subcommands
 case "$1" in
-	new) cmd=new;;
-	rm|remove) cmd=remove;;
+  new) cmd=new;;
+  rm|remove) cmd=remove;;
   ls|list) cmd=list;;
-	*) { show_help; exit; };;
+  *) { show_help; exit; };;
 esac
 
 shift
