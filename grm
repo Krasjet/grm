@@ -14,7 +14,7 @@
 # default url prefix (without ending slash)
 # GRM_URL_PREFIX="git://git.domain.tld"
 
-# path of the post-receive hooks
+# path of the post-receive hooks for stagit
 # GRM_POSTRECV_HOOK="/home/git/.post-receive"
 
 # root directory of stagit web pages
