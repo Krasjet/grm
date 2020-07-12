@@ -65,7 +65,7 @@ grm_new() {
 }
 
 grm_remove() {
-  [ -z $1 ] && { echo "no repo name given, exiting..."; exit 1; }
+  [ -z "$1" ] && { echo "no repo name given, exiting..."; exit 1; }
 
   printf "remove %s [y/N]? " "$1"
   read -r resp
