@@ -1,9 +1,9 @@
 #!/bin/sh
 # grm: git repo manager for self-hosted git server
 
-#--------------+-----------------+----------------#
-#              |  env variables  |                #
-#              +-----------------+                #
+#---------------+----------+-----------------#
+#               |  config  |                 #
+#               +----------+                 #
 
 # root directory of git repositories
 # GRM_REPOS_ROOT="/home/git"
@@ -14,9 +14,12 @@
 # default url prefix (without ending slash)
 # GRM_URL_PREFIX="git://git.domain.tld"
 
-#                                                 #
-#                                                 #
-#-------------------------------------------------#
+# path of the post-receive hooks
+# GRM_POSTRECV_HOOK="/home/git/.post-receive"
+
+#                                            #
+#                                            #
+#--------------------------------------------#
 
 prog_name=$(basename "$0")
 repos_root=${GRM_REPOS_ROOT:-"/home/git"}
@@ -24,6 +27,7 @@ repos_root=${GRM_REPOS_ROOT:-"/home/git"}
 grm_new() {
   default_owner=${GRM_OWNER:-$(logname)}
   url_prefix=${GRM_URL_PREFIX:-git://$(hostname)}
+  postrecv_path=${GRM_POSTRECV_HOOK:-/usr/local/share/doc/stagit/post-receive}
   default_desc="a work in progress"
 
   printf "repo name: "
@@ -59,14 +63,20 @@ grm_new() {
   git init --bare
 
   # write stagit related metadata
+  echo "writing stagit metadata..."
   echo "$repo_desc" > "$repo_path/description"
   echo "$owner" > "$repo_path/owner"
   echo "$clone_url" > "$repo_path/url"
 
   # export public repository for git daemon
   if echo "$repo_public" | grep -iq "^y$"; then
+    echo "exporting repo for git daemon..."
     touch "$repo_path/git-daemon-export-ok"
   fi
+
+  # install post-receive hook from stagit
+  echo "installing stagit post-receive hook"
+  ln -sf "$postrecv_path" "$repo_path/hooks/post-receive"
 
   # done
   echo "done!"
