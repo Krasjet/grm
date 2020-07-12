@@ -1,0 +1,113 @@
+#!/bin/sh
+# grm: git repo manager for self-hosted git server
+
+#--------------+-----------------+----------------#
+#              |  env variables  |                #
+#              +-----------------+                #
+
+# root directory of git repositories
+# GRM_REPOS_ROOT="/home/git"
+
+# default owner
+# GRM_OWNER="yourname"
+
+# default url prefix (without ending slash)
+# GRM_URL_PREFIX="git://git.domain.tld"
+
+#                                                 #
+#                                                 #
+#-------------------------------------------------#
+
+prog_name=$(basename "$0")
+repos_root=${GRM_REPOS_ROOT:-"/home/git"}
+
+grm_new() {
+  default_owner=${GRM_OWNER:-$(logname)}
+  url_prefix=${GRM_URL_PREFIX:-git://$(hostname)}
+  default_desc="a work in progress"
+
+  printf "repo name: "
+  read -r repo_name
+  [ -z "$repo_name" ] && \
+    { echo "no repo name given, exiting..."; exit 1; }
+
+  printf "description (%s): " "$default_desc"
+  read -r repo_desc
+  repo_desc=${repo_desc:-$default_desc}
+
+  printf "owner (%s): " "$default_owner"
+  read -r owner
+  owner=${owner:-$default_owner}
+
+  printf "clone url (%s): " "$url_prefix/$repo_name"
+  read -r clone_url
+  clone_url=${clone_url:-$url_prefix/$repo_name}
+
+  # now we have the complete path of the repo
+  repo_path="$repos_root/${repo_name}.git"
+
+  # first, create an empty directory
+  [ -e "$repo_path" ] && \
+    { echo "repository already exists"; exit 1; }
+  mkdir -p "$repo_path"
+  cd "$repo_path" || exit 1 # stop if directory can't be created
+
+  # initialize repo
+  git init --bare
+
+  # write stagit related metadata
+  echo "$repo_desc" > "$repo_path/description"
+  echo "$owner" > "$repo_path/owner"
+  echo "$clone_url" > "$repo_path/url"
+
+  # done
+  echo "done!"
+}
+
+grm_remove() {
+  [ -z $1 ] && { echo "no repo name given, exiting..."; exit 1; }
+
+  printf "remove %s [y/N]? " "$1"
+  read -r resp
+  case "$resp" in
+    [yY]) rm -rf "$repos_root/${1}.git" || \
+      { echo "failed to remove $1"; exit 1; };;
+    *) exit ;;
+  esac
+}
+
+grm_list() {
+  find "$repos_root/." ! -name . -prune -type d -name "*.git" \
+    -exec basename {} '.git' \;
+}
+
+show_help() {
+  cat << EOF
+usage: $prog_name <command> [<args>]
+
+Git repo manager, manage git repositories on self-hosted git server.
+
+If you have created a 'git' user for managing git repositories. This script
+should be run as:
+    sudo -u git $prog_name <command> [<args>]
+or
+    doas -u git $prog_name <command> [<args>]
+
+commands:
+    new        create a new repository
+    ls         list existing repositories
+    rm         remove directory
+    help       show help
+EOF
+}
+
+# parse subcommands
+case "$1" in
+	new) cmd=new;;
+	rm|remove) cmd=remove;;
+  ls|list) cmd=list;;
+	*) { show_help; exit; };;
+esac
+
+shift
+grm_"$cmd" "$@"
