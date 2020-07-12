@@ -9,9 +9,9 @@ Installation
 ------------
 
 Before installing `grm`, make sure you have set up your git server following
-the instructions in section [4.4][3] of Pro Git. Optionally, you should also
+the instructions in [section 4.4][3] of Pro Git. Optionally, you should also
 have [git daemon][1] ready for the public access of repositories, which is
-documented in section [4.5][4] of Pro Git. If you want to have a web interface
+documented in [section 4.5][4] of Pro Git. If you want to have a web interface
 for your repository, you should also have [stagit][2] compiled and installed on
 your server.
 
