@@ -28,6 +28,31 @@ prog_name=$(basename "$0")
 repos_root=${GRM_REPOS_ROOT:-"/home/git"}
 web_root=${STAGIT_WEB_ROOT:-/srv/git}
 
+recompile_repo() {
+  echo "[$1] recompiling stagit pages..."
+  repo_dir="${repos_root}/${1}.git"
+  repo_web_dir="${web_root}/${repo_name}"
+  cachefile="${repo_dir}/.htmlcache"
+
+  [ -d "$repo_dir" ] || { echo "[$1] repo not found"; return 1; }
+  mkdir -p "$repo_web_dir"
+  cd "$repo_web_dir" || return 1;
+
+	rm -f "$cachefile"
+	rm -rf "commit"
+
+  stagit -c "$cachefile" "$repo_dir"
+  ln -sf log.html index.html
+
+  echo "[$1] done!"
+}
+
+rebuild_index() {
+  echo "[index] rebuilding index..."
+  stagit-index "${repos_root}/"*.git/ > "${web_root}/index.html"
+  echo "[index] done!"
+}
+
 grm_new() {
   default_owner=${GRM_OWNER:-$(logname)}
   url_prefix=${GRM_URL_PREFIX:-git://$(hostname)}
@@ -94,33 +119,16 @@ grm_remove() {
     printf "remove %s? [y/N] " "$repo"
     read -r resp
     if echo "$resp" | grep -iq "^y$"; then
-      rm -rf "$repos_root/$repo.git" || \
-        { echo "failed to remove $repo"; exit 1; }
+      rm -rf "${repos_root:?}/${repo:?}.git" || exit 1;
+      rm -rf "${web_root:?}/${repo:?}" || exit 1;
     fi
   done
+  rebuild_index &
 }
 
 grm_list() {
   find "$repos_root/." ! -name . -prune -type d -name "*.git" \
     -exec basename {} '.git' \;
-}
-
-recompile_repo() {
-  repo_dir="${repos_root}/${1}.git"
-  repo_web_dir="${web_root}/${repo_name}"
-  cachefile="${repo_dir}/.htmlcache"
-
-  [ -d "$repo_dir" ] || { echo "[$1] repo not found"; return 1; }
-  mkdir -p "$repo_web_dir"
-  cd "$repo_web_dir" || return 1;
-
-	rm -f "$cachefile"
-	rm -rf "commit"
-
-  stagit -c "$cachefile" "$repo_dir"
-  ln -sf log.html index.html
-
-  echo "[$1] done!"
 }
 
 grm_recompile() {
@@ -130,13 +138,9 @@ grm_recompile() {
 
   for repo_name in "$@"
   do
-    echo "[$repo_name] recompiling stagit pages..."
     recompile_repo "$repo_name" &
   done
-  # build index
-  echo "[index] rebuilding index..."
-  stagit-index "${repos_root}/"*.git/ > "${web_root}/index.html" &
-  echo "[index] done!"
+  rebuild_index &
   wait
   echo "recompilation done!"
 }
