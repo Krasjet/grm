@@ -36,6 +36,9 @@ grm_new() {
   [ -e "$repo_path" ] && \
     { echo "repository already exists"; exit 1; }
 
+  printf "public? [y/N] "
+  read -r repo_public
+
   printf "description (%s): " "$default_desc"
   read -r repo_desc
   repo_desc=${repo_desc:-$default_desc}
@@ -60,6 +63,11 @@ grm_new() {
   echo "$owner" > "$repo_path/owner"
   echo "$clone_url" > "$repo_path/url"
 
+  # export public repository for git daemon
+  if echo "$repo_public" | grep -iq "^y$"; then
+    touch "$repo_path/git-daemon-export-ok"
+  fi
+
   # done
   echo "done!"
 }
@@ -69,13 +77,12 @@ grm_remove() {
 
   for repo in "$@"
   do
-    printf "remove %s [y/N]? " "$repo"
+    printf "remove %s? [y/N] " "$repo"
     read -r resp
-    case "$resp" in
-      [yY]) rm -rf "$repos_root/$repo.git" || \
-        { echo "failed to remove $repo"; exit 1; };;
-      *) exit ;;
-    esac
+    if echo "$resp" | grep -iq "^y$"; then
+      rm -rf "$repos_root/$repo.git" || \
+        { echo "failed to remove $repo"; exit 1; }
+    fi
   done
 }
 
