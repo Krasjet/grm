@@ -119,8 +119,8 @@ grm_remove() {
     printf "remove %s? [y/N] " "$repo"
     read -r resp
     if echo "$resp" | grep -iq "^y$"; then
-      rm -rf "${repos_root:?}/${repo:?}.git" || exit 1;
-      rm -rf "${web_root:?}/${repo:?}" || exit 1;
+      rm -rf "${repos_root:?}/${repo:?}.git" || continue;
+      rm -rf "${web_root:?}/${repo:?}" || continue;
     fi
   done
   rebuild_index &
