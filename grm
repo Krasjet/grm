@@ -24,6 +24,9 @@
 #                                            #
 #--------------------------------------------#
 
+# for stagit
+export LC_CTYPE="en_US.UTF-8"
+
 prog_name=$(basename "$0")
 repos_root=${GRM_REPOS_ROOT:-"/home/git"}
 web_root=${STAGIT_WEB_ROOT:-/srv/git}
@@ -132,10 +135,6 @@ grm_list() {
 }
 
 grm_recompile() {
-  [ $# -gt 0 ] || { echo "no repo name given, exiting..."; exit 1; }
-
-  export LC_CTYPE="en_US.UTF-8"
-
   for repo_name in "$@"
   do
     recompile_repo "$repo_name" &
@@ -151,18 +150,19 @@ usage: $prog_name <command> [<args>]
 
 Git repo manager, manage git repositories on self-hosted git server.
 
-If you have created a 'git' user for managing git repositories. This script
-should be run as:
+If you have created a 'git' user for managing git repositories. This
+script should be run as:
     doas -u git -- $prog_name <command> [<args>]
 or
     sudo -u git -- $prog_name <command> [<args>]
 
 commands:
-    new          create a new repository
-    ls           list existing repositories
-    rm name      remove repositories
-    rc name      recompile stagit pages
-    help         show help
+    new               create a new repository
+    ls                list existing repositories
+    rm repo_name      remove repositories
+    rc [repo_name]    recompile stagit pages for repositories, or
+                      rebuild index if no repositories are given
+    help              show help
 EOF
 }
 
