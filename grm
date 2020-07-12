@@ -116,7 +116,7 @@ or
 commands:
     new        create a new repository
     ls         list existing repositories
-    rm         remove directory
+    rm name    remove repositories
     help       show help
 EOF
 }
