@@ -39,10 +39,10 @@ recompile_repo() {
 
   [ -d "$repo_dir" ] || { echo "[$1] repo not found"; return 1; }
   mkdir -p "$repo_web_dir"
-  cd "$repo_web_dir" || return 1;
+  cd "${repo_web_dir:?}" || return 1;
 
-	rm -f "$cachefile"
-	rm -rf "commit"
+  rm -f "$cachefile"
+  rm -rf "commit"
 
   stagit -c "$cachefile" "$repo_dir"
   ln -sf log.html index.html
