@@ -109,9 +109,9 @@ Git repo manager, manage git repositories on self-hosted git server.
 
 If you have created a 'git' user for managing git repositories. This script
 should be run as:
-    doas -u -- git $prog_name <command> [<args>]
+    doas -u git -- $prog_name <command> [<args>]
 or
-    sudo -u -- git $prog_name <command> [<args>]
+    sudo -u git -- $prog_name <command> [<args>]
 
 commands:
     new        create a new repository
