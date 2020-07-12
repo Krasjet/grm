@@ -1,12 +1,12 @@
 git repo manager
-----------------
+================
 
 `grm` is a minimal, POSIX-compliant shell script for managing git repositories
 on self-hosted git servers. It is mainly designed to work with [git daemon][1]
 and [stagit][2], though the you don't necessarily need them to run the script.
 
 Installation
-============
+------------
 
 Before installing `grm`, make sure you have set up your git server following
 the instructions in section [4.4][3] of Pro Git. Optionally, you should also
@@ -41,7 +41,7 @@ that the hook itself needs some further configuration. You could also write
 your own `post-receive` hook.
 
 Usage
-=====
+-----
 
 ```
 $ grm help
@@ -84,7 +84,8 @@ or simply create an alias if you find it cumbersome:
 alias grm="ssh git@domain.tld -- grm"
 ```
 
-# License
+License
+-------
 
 `grm` is licensed under the MIT license.
 
