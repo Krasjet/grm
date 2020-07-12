@@ -17,12 +17,16 @@
 # path of the post-receive hooks
 # GRM_POSTRECV_HOOK="/home/git/.post-receive"
 
+# root directory of git repositories
+# STAGIT_WEB_ROOT="/srv/git"
+
 #                                            #
 #                                            #
 #--------------------------------------------#
 
 prog_name=$(basename "$0")
 repos_root=${GRM_REPOS_ROOT:-"/home/git"}
+web_root=${STAGIT_WEB_ROOT:-/srv/git}
 
 grm_new() {
   default_owner=${GRM_OWNER:-$(logname)}
@@ -101,6 +105,42 @@ grm_list() {
     -exec basename {} '.git' \;
 }
 
+recompile_repo() {
+  repo_dir="${repos_root}/${1}.git"
+  repo_web_dir="${web_root}/${repo_name}"
+  cachefile="${repo_dir}/.htmlcache"
+
+  [ -d "$repo_dir" ] || { echo "[$1] repo not found"; return 1; }
+  mkdir -p "$repo_web_dir"
+  cd "$repo_web_dir" || return 1;
+
+	rm -f "$cachefile"
+	rm -rf "commit"
+
+  stagit -c "$cachefile" "$repo_dir"
+  ln -sf log.html index.html
+
+  echo "[$1] done!"
+}
+
+grm_recompile() {
+  [ $# -gt 0 ] || { echo "no repo name given, exiting..."; exit 1; }
+
+  export LC_CTYPE="en_US.UTF-8"
+
+  for repo_name in "$@"
+  do
+    echo "[$repo_name] recompiling stagit pages..."
+    recompile_repo "$repo_name" &
+  done
+  # build index
+  echo "[index] rebuilding index..."
+  stagit-index "${repos_root}/"*.git/ > "${web_root}/index.html" &
+  echo "[index] done!"
+  wait
+  echo "recompilation done!"
+}
+
 show_help() {
   cat << EOF
 usage: $prog_name <command> [<args>]
@@ -114,18 +154,20 @@ or
     sudo -u git -- $prog_name <command> [<args>]
 
 commands:
-    new        create a new repository
-    ls         list existing repositories
-    rm name    remove repositories
-    help       show help
+    new          create a new repository
+    ls           list existing repositories
+    rm name      remove repositories
+    rc name      recompile stagit pages
+    help         show help
 EOF
 }
 
 # parse subcommands
 case "$1" in
   new) cmd=new;;
-  rm|remove) cmd=remove;;
   ls|list) cmd=list;;
+  rm|remove) cmd=remove;;
+  rc|recompile) cmd=recompile;;
   *) { show_help; exit; };;
 esac
 
