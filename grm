@@ -31,6 +31,11 @@ grm_new() {
   [ -z "$repo_name" ] && \
     { echo "no repo name given, exiting..."; exit 1; }
 
+  # now we have the complete path of the repo
+  repo_path="$repos_root/${repo_name}.git"
+  [ -e "$repo_path" ] && \
+    { echo "repository already exists"; exit 1; }
+
   printf "description (%s): " "$default_desc"
   read -r repo_desc
   repo_desc=${repo_desc:-$default_desc}
@@ -43,12 +48,7 @@ grm_new() {
   read -r clone_url
   clone_url=${clone_url:-$url_prefix/$repo_name}
 
-  # now we have the complete path of the repo
-  repo_path="$repos_root/${repo_name}.git"
-
   # first, create an empty directory
-  [ -e "$repo_path" ] && \
-    { echo "repository already exists"; exit 1; }
   mkdir -p "$repo_path"
   cd "$repo_path" || exit 1 # stop if directory can't be created
 
