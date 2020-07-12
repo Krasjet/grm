@@ -52,6 +52,7 @@ recompile_repo() {
 
 rebuild_index() {
   echo "[index] rebuilding index..."
+  mkdir -p "${web_root}" || return 1;
   # 1. find all directories in $repos_root ending with .git
   # 2. filter all the public repos (with git-daemon-export-ok)
   # 3. run stagit-index on the result
