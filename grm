@@ -39,14 +39,12 @@ recompile_repo() {
 
   [ -d "$repo_dir" ] || { echo "[$1] repo not found"; return 1; }
   mkdir -p "$repo_web_dir"
-  cd "${repo_web_dir:?}" || return 1;
 
-  rm -f "$cachefile"
-  rm -rf "commit"
-
-  stagit -c "$cachefile" "$repo_dir"
-  ln -sf log.html index.html
-
+  cd "${repo_web_dir:?}"             && \
+  rm -f "$cachefile"                 && \
+  rm -rf "commit"                    && \
+  stagit -c "$cachefile" "$repo_dir" && \
+  ln -sf log.html index.html         && \
   echo "[$1] done!"
 }
 
@@ -62,7 +60,7 @@ rebuild_index() {
     -type d -name "*.git"                     \
     -exec test -e "{}/git-daemon-export-ok" \;\
     -print |                                  \
-    sort | xargs stagit-index > "${web_root}/index.html"
+    sort | xargs stagit-index > "${web_root}/index.html" && \
   echo "[index] done!"
 }
 
