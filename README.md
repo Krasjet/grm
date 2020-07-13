@@ -11,8 +11,8 @@ Installation
 Before installing `grm`, make sure you have set up your git server following
 the instructions in [section 4.4][3] of Pro Git. Optionally, you should also
 have [git daemon][1] ready for the public access of repositories, which is
-documented in [section 4.5][4] of Pro Git. The basic structure of your git
-repositories root should have the following structure:
+documented in [section 4.5][4] of Pro Git. Your git repositories root should
+have the following structure:
 
 ```
 $GRM_REPOS_ROOT
