@@ -3,14 +3,14 @@ git repo manager
 
 `grm` is a minimal, POSIX-compliant shell script for managing git repositories
 on self-hosted git servers. It is mainly designed to work with [git daemon][1]
-and [stagit][2], though the you don't necessarily need them to run the script.
+and [stagit][2], though you don't necessarily need them to run the script.
 
 Installation
 ------------
 
 Before installing `grm`, make sure you have set up your git server following
 the instructions in [section 4.4][3] of Pro Git. Optionally, you should also
-have [git daemon][1] ready for the public access of repositories, which is
+have [git daemon][1] ready for the public access of the repositories, which is
 documented in [section 4.5][4] of Pro Git. Your git repositories root should
 have the following structure:
 
