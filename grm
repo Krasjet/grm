@@ -176,6 +176,8 @@ grm_recompile() {
 }
 
 grm_info() {
+  [ -z "$1" ] && { echo "no repo name given, exiting..."; exit 1; }
+
   repo_name=$1
   repo_dir="${repos_root}/${repo_name}.git"
 
