@@ -178,14 +178,18 @@ grm_recompile() {
 grm_info() {
   repo_name=$1
   repo_dir="${repos_root}/${repo_name}.git"
-  [ -d "$repo_dir" ] || { echo "can't find repo named $repo_name"; exit 1; }
 
+  [ -d "$repo_dir" ] || { echo "can't find repo named $repo_name"; exit 1; }
   echo "name: $repo_name"
 
+  RED='\e[91m'
+  GREEN='\e[92m'
+  RESET='\e[0m'
+
   if [ -e "${repo_dir}/git-daemon-export-ok" ]; then
-    printf "visibility: \x1b[92mpublic\x1b[0m\n"
+    printf "%s\n" "visibility: ${GREEN}public${RESET}"
   else
-    printf "visibility: \x1b[91mprivate\x1b[0m\n"
+    printf "%s\n" "visibility: ${RED}private${RESET}\n"
   fi
 
   [ -f "${repo_dir}/description" ] && \
