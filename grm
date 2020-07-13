@@ -182,14 +182,14 @@ grm_info() {
   [ -d "$repo_dir" ] || { echo "can't find repo named $repo_name"; exit 1; }
   echo "name: $repo_name"
 
-  RED='\e[91m'
-  GREEN='\e[92m'
-  RESET='\e[0m'
+  RED="\033[91m"
+  GREEN="\033[92m"
+  RESET="\033[0m"
 
   if [ -e "${repo_dir}/git-daemon-export-ok" ]; then
-    printf "%s\n" "visibility: ${GREEN}public${RESET}"
+    printf "%b\n" "visibility: ${GREEN}public${RESET}"
   else
-    printf "%s\n" "visibility: ${RED}private${RESET}\n"
+    printf "%b\n" "visibility: ${RED}private${RESET}\n"
   fi
 
   [ -f "${repo_dir}/description" ] && \
