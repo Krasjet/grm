@@ -191,7 +191,7 @@ grm_info() {
   if [ -e "${repo_dir}/git-daemon-export-ok" ]; then
     printf "%b\n" "visibility: ${GREEN}public${RESET}"
   else
-    printf "%b\n" "visibility: ${RED}private${RESET}\n"
+    printf "%b\n" "visibility: ${RED}private${RESET}"
   fi
 
   [ -f "${repo_dir}/description" ] && \
