@@ -151,16 +151,16 @@ grm_list() {
           -exec basename {} '.git' \;                \
         \) ;;
     private)
-      find "${repos_root}/." ! -name . -prune          \
-        -type d -name "*.git"                          \
-        \(                                             \
-          -exec test -e "{}/git-daemon-export-ok" \;   \
-          -o                                           \
-          -exec basename {} '.git' \;                  \
+      find "${repos_root}/." ! -name . -prune        \
+        -type d -name "*.git"                        \
+        \(                                           \
+          -exec test -e "{}/git-daemon-export-ok" \; \
+          -o                                         \
+          -exec basename {} '.git' \;                \
         \) ;;
     *)
       find "${repos_root}/." ! -name . -prune \
-        -type d -name "*.git"               \
+        -type d -name "*.git"                 \
         -exec basename {} '.git' \; ;;
   esac
 }
