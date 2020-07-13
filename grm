@@ -142,8 +142,27 @@ grm_remove() {
 }
 
 grm_list() {
-  find "$repos_root/." ! -name . -prune -type d -name "*.git" \
-    -exec basename {} '.git' \;
+  case "$1" in
+    public)
+      find "${repos_root}/." ! -name . -prune        \
+        -type d -name "*.git"                        \
+        \(                                           \
+          -exec test -e "{}/git-daemon-export-ok" \; \
+          -exec basename {} '.git' \;                \
+        \) ;;
+    private)
+      find "${repos_root}/." ! -name . -prune          \
+        -type d -name "*.git"                          \
+        \(                                             \
+          -exec test -e "{}/git-daemon-export-ok" \;   \
+          -o                                           \
+          -exec basename {} '.git' \;                  \
+        \) ;;
+    *)
+      find "${repos_root}/." ! -name . -prune \
+        -type d -name "*.git"               \
+        -exec basename {} '.git' \; ;;
+  esac
 }
 
 grm_recompile() {
@@ -169,12 +188,15 @@ or
     sudo -u git -- $prog_name <command> [<args>]
 
 commands:
-    new               create a new repository
-    ls                list existing repositories
-    rm repo_name      remove repositories
-    rc [repo_name]    recompile stagit pages for repositories, or
-                      rebuild index if no repositories are given
-    help              show help
+    new                  create a new repository
+    ls                   list all repositories
+    ls public            list public repositories
+    ls private           list private repositories
+    rm repo1 [repo2..]   remove repositories
+    rc                   rebuild index
+    rc repo1 [repo2..]   recompile stagit pages for repositories,
+                         and rebuild index
+    help                 show help
 EOF
 }
 
