@@ -170,6 +170,10 @@ grm_recompile() {
   echo "recompilation done!"
 }
 
+grm_recompileall() {
+  grm_list public | xargs "$0" rc
+}
+
 grm_info() {
   [ -z "$1" ] && { echo "no repo name given, exiting..."; exit 1; }
 
@@ -212,19 +216,17 @@ or
     $ sudo -u git -- $prog_name <command> [<args>]
 
 commands:
-    new                  create a new repository
+    new                  create a new repo
     info repo_name       display metadata of the repo
-    ls                   list all repositories
-    ls public            list public repositories
-    ls private           list private repositories
-    rm repo1 [repo2..]   remove repositories
+    ls                   list all repos
+    ls public            list public repos
+    ls private           list private repos
+    rm repo1 [repo2..]   remove repos
     rc                   recompile stagit index
-    rc repo1 [repo2..]   recompile stagit pages for repositories,
+    rc repo1 [repo2..]   recompile stagit pages for repos,
                          and recompile index
+    rca                  recompile all public repos
     help                 show help
-
-To recompile stagit pages for all repositories,
-    $ $prog_name ls | xargs $prog_name rc
 EOF
 }
 
@@ -234,6 +236,7 @@ case "$1" in
   ls|list) cmd=list;;
   rm|remove) cmd=remove;;
   rc|recompile) cmd=recompile;;
+  rca|recompileall) cmd=recompileall;;
   info) cmd=info;;
   *) { show_help; exit; };;
 esac

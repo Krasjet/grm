@@ -65,15 +65,16 @@ usage: grm <command> [<args>]
 Git repo manager, manage git repositories on self-hosted git servers.
 
 commands:
-    new                  create a new repository
+    new                  create a new repo
     info repo_name       display metadata of the repo
-    ls                   list all repositories
-    ls public            list public repositories
-    ls private           list private repositories
-    rm repo1 [repo2..]   remove repositories
+    ls                   list all repos
+    ls public            list public repos
+    ls private           list private repos
+    rm repo1 [repo2..]   remove repos
     rc                   recompile stagit index
-    rc repo1 [repo2..]   recompile stagit pages for repositories,
+    rc repo1 [repo2..]   recompile stagit pages for repos,
                          and recompile index
+    rca                  recompile all public repos
     help                 show help
 ```
 
