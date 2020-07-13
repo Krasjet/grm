@@ -77,7 +77,7 @@ commands:
     help                 show help
 ```
 
-To recompile all repositories,
+To recompile stagit pages for all repositories,
 
 ```bash
 $ grm ls | xargs grm rc

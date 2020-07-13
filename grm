@@ -227,7 +227,7 @@ commands:
                          and rebuild index
     help                 show help
 
-To recompile all repositories,
+To recompile stagit pages for all repositories,
     $ grm ls | xargs grm rc
 EOF
 }
