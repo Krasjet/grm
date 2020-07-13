@@ -50,12 +50,15 @@ usage: grm <command> [<args>]
 Git repo manager, manage git repositories on self-hosted git server.
 
 commands:
-    new               create a new repository
-    ls                list existing repositories
-    rm repo_name      remove repositories
-    rc [repo_name]    recompile stagit pages for repositories, or
-                      rebuild index if no repositories are given
-    help              show help
+    new                  create a new repository
+    ls                   list all repositories
+    ls public            list public repositories
+    ls private           list private repositories
+    rm repo1 [repo2..]   remove repositories
+    rc                   rebuild index
+    rc repo1 [repo2..]   recompile stagit pages for repositories,
+                         and rebuild index
+    help                 show help
 ```
 
 If you have created a `git` user for managing git repositories, make sure the
