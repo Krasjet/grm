@@ -51,6 +51,7 @@ Git repo manager, manage git repositories on self-hosted git server.
 
 commands:
     new                  create a new repository
+    info repo_name       display metadata of the repo
     ls                   list all repositories
     ls public            list public repositories
     ls private           list private repositories
