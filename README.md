@@ -71,9 +71,9 @@ commands:
     ls public            list public repositories
     ls private           list private repositories
     rm repo1 [repo2..]   remove repositories
-    rc                   rebuild index
+    rc                   recompile stagit index
     rc repo1 [repo2..]   recompile stagit pages for repositories,
-                         and rebuild index
+                         and recompile index
     help                 show help
 ```
 
