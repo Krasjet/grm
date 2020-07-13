@@ -1,5 +1,5 @@
 #!/bin/sh
-# grm: git repo manager for self-hosted git server
+# grm: git repo manager for self-hosted git servers
 
 #---------------+----------+-----------------#
 #               |  config  |                 #
@@ -207,7 +207,7 @@ show_help() {
   cat << EOF
 usage: $prog_name <command> [<args>]
 
-Git repo manager, manage git repositories on self-hosted git server.
+Git repo manager, manage git repositories on self-hosted git servers.
 
 If you have created a 'git' user for managing git repositories, this
 script should be run as:
@@ -228,7 +228,7 @@ commands:
     help                 show help
 
 To recompile stagit pages for all repositories,
-    $ grm ls | xargs grm rc
+    $ $prog_name ls | xargs $prog_name rc
 EOF
 }
 

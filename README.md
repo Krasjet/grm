@@ -62,7 +62,7 @@ Usage
 $ grm help
 usage: grm <command> [<args>]
 
-Git repo manager, manage git repositories on self-hosted git server.
+Git repo manager, manage git repositories on self-hosted git servers.
 
 commands:
     new                  create a new repository
