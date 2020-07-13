@@ -61,7 +61,6 @@ rebuild_index() {
     -type d -name "*.git"                        \
     \(                                           \
       -exec test -e "{}/git-daemon-export-ok" \; \
-      -o                                         \
       -exec stagit-index {} +                    \
     \) > "${web_root}/index.html"
   echo "[index] done!"
