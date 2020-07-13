@@ -104,9 +104,9 @@ grm_new() {
 
   # write stagit related metadata
   echo "writing stagit metadata..."
-  echo "$repo_desc" > "$repo_path/description"
-  echo "$owner" > "$repo_path/owner"
-  echo "$clone_url" > "$repo_path/url"
+  printf "%s\n" "$repo_desc" > "$repo_path/description"
+  printf "%s\n" "$owner" > "$repo_path/owner"
+  printf "%s\n" "$clone_url" > "$repo_path/url"
 
   # export public repository for git daemon
   if echo "$repo_public" | grep -iq "^y$"; then
