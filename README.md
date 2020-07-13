@@ -85,7 +85,7 @@ $ grm ls | xargs grm rc
 ```
 
 If you have created a `git` user for managing git repositories, make sure the
-`git` user have write access to all the directories in the config, and run the
+`git` user has write access to all the directories in the config, and run the
 script on the server as:
 
 ```bash
