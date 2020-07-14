@@ -156,4 +156,4 @@ License
 [2]: https://codemadness.org/git/stagit/
 [3]: https://git-scm.com/book/en/v2/Git-on-the-Server-Setting-Up-the-Server
 [4]: https://git-scm.com/book/en/v2/Git-on-the-Server-Git-Daemon
-[5]: https://codemadness.org/git/stagit/file/example_post-receive.sh.html
+[5]: https://sink.krj.st/stagit/file/post-receive.html
