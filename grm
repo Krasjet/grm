@@ -60,7 +60,7 @@ rebuild_index() {
   find "${repos_root}/." ! -name . -prune     \
     -type d -name "*.git"                     \
     -exec test -e "{}/git-daemon-export-ok" \;\
-    -exec test ! -e "{}/stagit-no-index" \;\
+    -exec test ! -e "{}/stagit-no-index" \;   \
     -print |                                  \
     sort -f | xargs stagit-index > "${web_root}/index.html" && \
   echo "[index] done!"
