@@ -60,7 +60,7 @@ rebuild_index() {
     -type d -name "*.git"                     \
     -exec test -e "{}/git-daemon-export-ok" \;\
     -print |                                  \
-    sort | xargs stagit-index > "${web_root}/index.html" && \
+    sort -f | xargs stagit-index > "${web_root}/index.html" && \
   echo "[index] done!"
 }
 
