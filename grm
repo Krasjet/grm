@@ -53,12 +53,14 @@ rebuild_index() {
   mkdir -p "${web_root}" || return 1;
   # 1. find all directories in $repos_root ending with .git
   # 2. filter all the public repos (with git-daemon-export-ok)
-  # 3. sort the result
-  # 4. run stagit-index on the result
-  # 5. export result to index.html
+  # 3. exclude any repo marked with stagit-no-index
+  # 4. sort the result
+  # 5. run stagit-index on the result
+  # 6. export result to index.html
   find "${repos_root}/." ! -name . -prune     \
     -type d -name "*.git"                     \
     -exec test -e "{}/git-daemon-export-ok" \;\
+    -exec test ! -e "{}/stagit-no-index" \;\
     -print |                                  \
     sort -f | xargs stagit-index > "${web_root}/index.html" && \
   echo "[index] done!"
@@ -148,11 +150,8 @@ grm_list() {
     private)
       find "${repos_root}/." ! -name . -prune        \
         -type d -name "*.git"                        \
-        \(                                           \
-          -exec test -e "{}/git-daemon-export-ok" \; \
-          -o                                         \
-          -exec basename {} '.git' \;                \
-        \) ;;
+        -exec test ! -e "{}/git-daemon-export-ok" \; \
+        -exec basename {} '.git' \; ;;
     *)
       find "${repos_root}/." ! -name . -prune \
         -type d -name "*.git"                 \
