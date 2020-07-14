@@ -110,6 +110,37 @@ or simply create an alias if you find it cumbersome:
 alias grm="ssh git@domain.tld -- grm"
 ```
 
+Examples
+--------
+
+```
+$ grm new
+repo name: grmr
+public? [y/N] y
+description (a work in progress): grm redux
+owner (yourname): kst
+clone url (git://domain.tld/grmr): git://git.domain.tld/grmr
+Initialized empty Git repository in /home/git/grmr.git/
+writing stagit metadata...
+exporting repo for git daemon...
+installing stagit post-receive hook
+done!
+$ grm ls
+grmr
+$ grm info grmr
+name: grmr
+visibility: public
+description: grm redux
+owner: kst
+url: git://git.domain.tld/grmr
+$ grm rc grmr
+[grmr] recompiling stagit pages...
+[index] rebuilding index...
+[grmr] done!
+[index] done!
+recompilation done!
+```
+
 License
 -------
 
