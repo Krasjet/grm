@@ -20,11 +20,17 @@ $GRM_REPOS_ROOT
 │   ├── branches
 │   ├── HEAD
 │   └── ...
-└── public-repo.git
+├── public-repo.git
+│   ├── branches
+│   ├── HEAD
+│   ├── ...
+│   └── git-daemon-export-ok
+└── hidden-repo.git
     ├── branches
     ├── HEAD
     ├── ...
-    └── git-daemon-export-ok
+    ├── git-daemon-export-ok
+    └── stagit-no-index
 ```
 
 If you want to have a web interface for your repositories, you should also have
