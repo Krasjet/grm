@@ -38,7 +38,7 @@ If you want to have a web interface for your repositories, you should also have
 
 To use git repo manager, edit the `grm` script to fill in some configurations,
 
-```bash
+```sh
 # root directory of git repositories
 GRM_REPOS_ROOT="/home/git"
 
@@ -88,25 +88,25 @@ If you have created a `git` user for managing git repositories, make sure the
 `git` user has write access to all the directories in the config, and run the
 script on the server as:
 
-```bash
+```sh
 $ doas -u git -- grm <command> [<args>]
 ```
 
 or
 
-```bash
+```sh
 $ sudo -u git -- grm <command> [<args>]
 ```
 
 You could also run the script on your local machine using ssh,
 
-```bash
+```sh
 $ ssh git@domain.tld -- grm <command> [<args>]
 ```
 
 or simply create an alias if you find it cumbersome:
 
-```bash
+```sh
 alias grm="ssh git@domain.tld -- grm"
 ```
 
