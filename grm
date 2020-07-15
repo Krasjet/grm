@@ -138,6 +138,7 @@ grm_remove() {
   done
   # only rebuild index if stagit exists
   command -v stagit-index >/dev/null && rebuild_index &
+  wait
 }
 
 grm_list() {
