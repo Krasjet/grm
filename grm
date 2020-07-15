@@ -113,11 +113,11 @@ grm_new() {
   # export public repository for git daemon
   if echo "$repo_public" | grep -iq "^y$"; then
     echo "exporting repo for git daemon..."
-    touch "$repo_path/git-daemon-export-ok"
+    : >> "$repo_path/git-daemon-export-ok"
   fi
 
   # install post-receive hook from stagit
-  echo "installing stagit post-receive hook"
+  echo "installing stagit post-receive hook..."
   ln -sf "$postrecv_path" "$repo_path/hooks/post-receive"
 
   # done
