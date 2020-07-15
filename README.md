@@ -76,6 +76,7 @@ commands:
     ls                   list all repos
     ls public            list public repos
     ls private           list private repos
+    ls hidden            list hidden (unlisted) repos
     rm repo1 [repo2..]   remove repos
     rc                   recompile stagit index
     rc repo1 [repo2..]   recompile stagit pages for repos,

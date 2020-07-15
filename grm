@@ -146,12 +146,18 @@ grm_list() {
     public)
       find "${repos_root}/." ! -name . -prune        \
         -type d -name "*.git"                        \
-        -exec test -e "{}/git-daemon-export-ok" \; \
+        -exec test -e "{}/git-daemon-export-ok" \;   \
+        -exec test ! -e "{}/stagit-no-index" \;      \
         -exec basename {} '.git' \; ;;
     private)
       find "${repos_root}/." ! -name . -prune        \
         -type d -name "*.git"                        \
         -exec test ! -e "{}/git-daemon-export-ok" \; \
+        -exec basename {} '.git' \; ;;
+    hidden|unlisted)
+      find "${repos_root}/." ! -name . -prune        \
+        -type d -name "*.git"                        \
+        -exec test -e "{}/stagit-no-index" \;        \
         -exec basename {} '.git' \; ;;
     *)
       find "${repos_root}/." ! -name . -prune \
@@ -221,6 +227,7 @@ commands:
     ls                   list all repos
     ls public            list public repos
     ls private           list private repos
+    ls hidden            list hidden (unlisted) repos
     rm repo1 [repo2..]   remove repos
     rc                   recompile stagit index
     rc repo1 [repo2..]   recompile stagit pages for repos,
