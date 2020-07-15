@@ -84,12 +84,6 @@ commands:
     help                 show help
 ```
 
-To recompile stagit pages for all repositories,
-
-```bash
-$ grm ls | xargs grm rc
-```
-
 If you have created a `git` user for managing git repositories, make sure the
 `git` user has write access to all the directories in the config, and run the
 script on the server as:
