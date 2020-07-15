@@ -42,7 +42,7 @@ recompile_repo() {
 
   cd "${repo_web_dir:?}"             && \
   rm -f "$cachefile"                 && \
-  rm -rf "commit"                    && \
+  rm -rf "commit" "file"             && \
   stagit -c "$cachefile" "$repo_dir" && \
   ln -sf log.html index.html         && \
   echo "[$1] done!"
