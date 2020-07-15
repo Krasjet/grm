@@ -27,7 +27,7 @@
 # for stagit
 export LC_CTYPE="en_US.UTF-8"
 
-prog_name=$(basename "$0")
+prog_name="${0##*/}"
 repos_root=${GRM_REPOS_ROOT:-/home/git}
 web_root=${STAGIT_WEB_ROOT:-/srv/git}
 
