@@ -126,6 +126,7 @@ exporting repo for git daemon...
 installing stagit post-receive hook
 done!
 $ grm ls
+grm
 grmr
 $ grm info grmr
 name: grmr
@@ -139,6 +140,12 @@ $ grm rc grmr
 [grmr] done!
 [index] done!
 recompilation done!
+$ grm rm grmr
+remove grmr? [y/N] y
+[index] rebuilding index...
+[index] done!
+$ grm ls
+grm
 ```
 
 License
