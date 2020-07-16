@@ -55,14 +55,18 @@ rebuild_index() {
   # 2. filter all the public repos (with git-daemon-export-ok)
   # 3. exclude any repo marked with stagit-no-index
   # 4. sort the result
-  # 5. run stagit-index on the result
-  # 6. export result to index.html
+  # 5. hack for posix compatibility
+  # 6. run stagit-index on the result
+  # 7. export result to index.html
   find "${repos_root}/." ! -name . -prune     \
     -type d -name "*.git"                     \
     -exec test -e "{}/git-daemon-export-ok" \;\
     -exec test ! -e "{}/stagit-no-index" \;   \
-    -print |                                  \
-    sort -f | xargs stagit-index > "${web_root}/index.html" && \
+    -print                                    \
+    | sort -f                                 \
+    | sed -e 's/"/"\\""/g' -e 's/.*/"&"/'     \
+    | xargs stagit-index                      \
+    > "${web_root}/index.html" && \
   echo "[index] done!"
 }
 
@@ -186,7 +190,9 @@ grm_recompile() {
 }
 
 grm_recompileall() {
-  grm_list public | xargs "$0" rc
+  grm_list public \
+    | sed -e 's/"/"\\""/g' -e 's/.*/"&"/' \
+    | xargs "$0" rc
 }
 
 grm_info() {
