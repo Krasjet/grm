@@ -25,7 +25,7 @@ $GRM_REPOS_ROOT
 │   ├── HEAD
 │   ├── ...
 │   └── git-daemon-export-ok
-└── hidden-repo.git
+└── unlisted-repo.git
     ├── branches
     ├── HEAD
     ├── ...
@@ -76,7 +76,7 @@ commands:
     ls                   list all repos
     ls public            list public repos
     ls private           list private repos
-    ls hidden            list hidden (unlisted) repos
+    ls unlisted          list unlisted repos
     rm repo1 [repo2..]   remove repos
     rc                   recompile stagit index
     rc repo1 [repo2..]   recompile stagit pages for repos,
@@ -116,15 +116,24 @@ Examples
 
 ```
 $ grm new
-repo name: grmr
-public? [y/N] y
-description (a work in progress): grm redux
-owner (yourname): kst
-clone url (git://domain.tld/grmr): git://git.domain.tld/grmr
+repo name
+> grmr
+visibility:
+  1) public
+  2) private
+  3) unlisted (hide from index)
+enter index [default: 1]
+> 1
+description [a work in progress]
+> grm redux
+owner [yourname]
+> kst
+clone url [git://domain.tld/grmr]
+> git://git.domain.tld/grmr
 Initialized empty Git repository in /home/git/grmr.git/
 writing stagit metadata...
-exporting repo for git daemon...
-installing stagit post-receive hook
+setting visibility...
+installing stagit post-receive hook...
 done!
 $ grm ls
 grm
