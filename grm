@@ -66,13 +66,20 @@ rebuild_index() {
   echo "[index] done!"
 }
 
+RED="\033[91m"
+GREEN="\033[92m"
+YELLOW="\033[93m"
+BLUE="\033[94m"
+RESET="\033[0m"
+
 grm_new() {
+  set -e
   default_owner=${GRM_OWNER:-$(logname)}
   url_prefix=${GRM_URL_PREFIX:-git://$(hostname)}
   postrecv_path=${GRM_POSTRECV_HOOK:-/usr/local/share/doc/stagit/post-receive}
   default_desc="a work in progress"
 
-  printf "repo name: "
+  printf "%b\n> " "${BLUE}repo name${RESET}"
   read -r repo_name
   [ -z "$repo_name" ] && \
     { echo "no repo name given, exiting..."; exit 1; }
@@ -82,45 +89,47 @@ grm_new() {
   [ -e "$repo_path" ] && \
     { echo "repository already exists"; exit 1; }
 
-  printf "public? [y/N] "
-  read -r repo_public
+  printf "%b\n> " "${YELLOW}visibility:
+  1) public\n  2) private\n  3) unlisted (hide from index)
+${BLUE}enter index [default: ${GREEN}1${BLUE}]${RESET}"
+  read -r visibility
 
-  printf "description (%s): " "$default_desc"
+  case $visibility in
+     1|public) exported=1 ;;
+     2|private) ;;
+     3|unlisted) exported=1; hidden=1 ;;
+     *) printf "%b\n" "${YELLOW}visibility defaults to ${GREEN}public${RESET}"
+        exported=1 ;;
+  esac
+
+  printf "%b\n> " "${BLUE}description [${GREEN}${default_desc}${BLUE}]${RESET}"
   read -r repo_desc
   repo_desc=${repo_desc:-$default_desc}
 
-  printf "owner (%s): " "$default_owner"
+  printf "%b\n> " "${BLUE}owner [${GREEN}${default_owner}${BLUE}]${RESET}"
   read -r owner
   owner=${owner:-$default_owner}
 
-  printf "clone url (%s): " "$url_prefix/$repo_name"
+  printf "%b\n> " \
+    "${BLUE}clone url [${GREEN}$url_prefix/$repo_name${BLUE}]${RESET}"
   read -r clone_url
   clone_url=${clone_url:-$url_prefix/$repo_name}
 
-  # first, create an empty directory
-  mkdir -p "$repo_path"
-  cd "$repo_path" || exit 1 # stop if directory can't be created
+  # start creating repo
+  git init --bare "$repo_path"
 
-  # initialize repo
-  git init --bare
-
-  # write stagit related metadata
   echo "writing stagit metadata..."
   printf "%s\n" "$repo_desc" > "$repo_path/description"
   printf "%s\n" "$owner" > "$repo_path/owner"
   printf "%s\n" "$clone_url" > "$repo_path/url"
 
-  # export public repository for git daemon
-  if echo "$repo_public" | grep -iq "^y$"; then
-    echo "exporting repo for git daemon..."
-    : >> "$repo_path/git-daemon-export-ok"
-  fi
+  echo "setting visibility..."
+  [ "$exported" = "1" ] && : >> "$repo_path/git-daemon-export-ok"
+  [ "$hidden" = "1" ] && : >> "$repo_path/stagit-no-index"
 
-  # install post-receive hook from stagit
   echo "installing stagit post-receive hook..."
   ln -sf "$postrecv_path" "$repo_path/hooks/post-receive"
 
-  # done
   echo "done!"
 }
 
@@ -188,15 +197,16 @@ grm_info() {
 
   [ -d "$repo_dir" ] || { echo "can't find repo named $repo_name"; exit 1; }
   echo "name: $repo_name"
-
-  RED="\033[91m"
-  GREEN="\033[92m"
-  RESET="\033[0m"
+  printf "visibility: "
 
   if [ -e "${repo_dir}/git-daemon-export-ok" ]; then
-    printf "%b\n" "visibility: ${GREEN}public${RESET}"
+    if [ -e "${repo_dir}/stagit-no-index" ]; then
+      printf "%b\n" "${YELLOW}unlisted${RESET}"
+    else
+      printf "%b\n" "${GREEN}public${RESET}"
+    fi
   else
-    printf "%b\n" "visibility: ${RED}private${RESET}"
+    printf "%b\n" "${RED}private${RESET}"
   fi
 
   [ -f "${repo_dir}/description" ] && \
@@ -227,7 +237,7 @@ commands:
     ls                   list all repos
     ls public            list public repos
     ls private           list private repos
-    ls hidden            list hidden (unlisted) repos
+    ls unlisted          list unlisted (hidden) repos
     rm repo1 [repo2..]   remove repos
     rc                   recompile stagit index
     rc repo1 [repo2..]   recompile stagit pages for repos,
