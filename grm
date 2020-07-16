@@ -102,16 +102,16 @@ ${BLUE}enter index [default: ${GREEN}1${BLUE}]${RESET}"
         exported=1 ;;
   esac
 
-  printf "%b\n> " "${BLUE}description [${GREEN}${default_desc}${BLUE}]${RESET}"
+  printf "%b%s%b\n> " "${BLUE}description [${GREEN}" "$default_desc" "${BLUE}]${RESET}"
   read -r repo_desc
   repo_desc=${repo_desc:-$default_desc}
 
-  printf "%b\n> " "${BLUE}owner [${GREEN}${default_owner}${BLUE}]${RESET}"
+  printf "%b%s%b\n> " "${BLUE}owner [${GREEN}" "$default_owner" "${BLUE}]${RESET}"
   read -r owner
   owner=${owner:-$default_owner}
 
-  printf "%b\n> " \
-    "${BLUE}clone url [${GREEN}$url_prefix/$repo_name${BLUE}]${RESET}"
+  printf "%b%s%b\n> " \
+    "${BLUE}clone url [${GREEN}" "$url_prefix/$repo_name" "${BLUE}]${RESET}"
   read -r clone_url
   clone_url=${clone_url:-$url_prefix/$repo_name}
 
