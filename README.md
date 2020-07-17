@@ -55,7 +55,11 @@ GRM_POSTRECV_HOOK="/home/git/.post-receive"
 STAGIT_WEB_ROOT="/srv/git"
 ```
 
-and copy it to `$PATH`.
+then
+
+```
+$ make install
+```
 
 An example of the `post-receive` hook for stagit can be found [here][5]. Note
 that the hook itself needs some further configuration. You could also write

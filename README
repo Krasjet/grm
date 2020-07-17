@@ -51,7 +51,9 @@ To use git repo manager, edit the grm script to fill in some configurations,
   # root directory of stagit web pages
   STAGIT_WEB_ROOT="/srv/git"
 
-and copy it to $PATH.
+then
+
+  $ make install
 
 An example of the post-receive hook for stagit can be found here [5]. Note that
 the hook itself needs some further configuration. You could also write your own
