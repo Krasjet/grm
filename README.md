@@ -62,8 +62,7 @@ $ make install
 ```
 
 An example of the `post-receive` hook for stagit can be found [here][5]. Note
-that the hook itself needs some further configuration. You could also write
-your own `post-receive` hook.
+that the hook itself needs some further configuration.
 
 Usage
 -----
