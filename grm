@@ -79,7 +79,7 @@ RESET="\033[0m"
 grm_new() {
   set -e
   default_owner=${GRM_OWNER:-$(logname)}
-  url_prefix=${GRM_URL_PREFIX:-git://$(hostname)}
+  url_prefix=${GRM_URL_PREFIX:-git://$(hostname -f)}
   postrecv_path=${GRM_POSTRECV_HOOK:-/usr/local/share/doc/stagit/post-receive}
   default_desc="a work in progress"
 
