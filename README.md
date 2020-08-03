@@ -117,7 +117,7 @@ alias grm="ssh git@domain.tld -- grm"
 Examples
 --------
 
-```
+```console
 $ grm new
 repo name
 > grmr

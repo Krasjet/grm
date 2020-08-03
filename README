@@ -125,6 +125,7 @@ done!
 $ grm ls
 grm
 grmr
+
 $ grm info grmr
 name: grmr
 visibility: public
