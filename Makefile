@@ -2,7 +2,7 @@
 
 # on BSDs, GNU rm is sometimes named grm, so make sure you are
 # not overriding it
-PREFIX = /usr
+PREFIX = /usr/local
 
 install:
 	mkdir -p ${PREFIX}/bin
